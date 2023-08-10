@@ -7,9 +7,10 @@ export const Emojis = styled('div')`
   align-items: center;
   flex-direction: row;
   position: relative;
-  border: 1px solid mediumslateblue;
+  border-bottom: 2px solid slategray;
   margin: 4px;
   padding: 8px;
+  color: white;
 `;
 
 export const EmojisImage = styled('div')`

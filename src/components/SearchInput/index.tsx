@@ -1,19 +1,29 @@
-import { Input, Space } from 'antd';
-import { Dispatch, SetStateAction } from 'react';
+import { Input } from 'antd';
+import { useMemo } from 'react';
 
 import * as Styled from './styles';
+import { useSearchParams } from 'hooks/useSearchParams';
 
 const { Search } = Input;
-type SearchInputProps = {
-  setFilter: Dispatch<SetStateAction<string>>;
-};
 
-export const SearchInput = ({ setFilter }: SearchInputProps) => {
+export const SearchInput = () => {
+  const { updateSearch, searchParams } = useSearchParams();
+  const searchValue = useMemo(() => {
+    console.info('rerender');
+
+    return searchParams.get('filter') || '';
+  }, [searchParams]);
+
   return (
     <Styled.Content>
       <Styled.Header>Emoji Search</Styled.Header>
       <Search
-        onSearch={value => setFilter(value)}
+        value={searchValue}
+        onChange={e =>
+          updateSearch({
+            filter: e.target.value
+          })
+        }
         placeholder="Emojis name"
         style={{ width: 400 }}
       />

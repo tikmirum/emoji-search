@@ -4,16 +4,21 @@ import * as Styled from './styles';
 import { SearchInput } from '../../components/SearchInput';
 import { EmojiItem } from '../../components/EmojiItem';
 import { EmojiProps } from '../../interfaces/emoji';
+import { useSearchParams } from '../../hooks/useSearchParams';
 
 export const EmojiSearch = () => {
-  const [filter, setFilter] = useState('');
+  const { searchParams } = useSearchParams();
   const [emojis, setEmojis] = useState<EmojiProps[]>([]);
-  const [newEmojis, setNewEmojis] = useState(emojis);
+  const [newEmojis, setNewEmojis] = useState<EmojiProps[]>([]);
 
   useEffect(() => {
-    console.info('render', filter, emojis);
+    if (!emojis.length) {
+      return;
+    }
 
-    if (filter === '') {
+    const filter = searchParams.get('filter');
+
+    if (!filter) {
       setNewEmojis(emojis);
 
       return;
@@ -21,7 +26,7 @@ export const EmojiSearch = () => {
 
     const filteredEmojis = emojis.filter(el => el.unicodeName.includes(filter));
     setNewEmojis(filteredEmojis);
-  }, [filter, emojis]);
+  }, [searchParams, emojis]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +37,7 @@ export const EmojiSearch = () => {
 
         if (response) {
           const data = await response.json();
-          setEmojis(data);
+          setEmojis(data.slice(0, 100));
         }
       } catch (err) {
         console.error(err);
@@ -44,7 +49,7 @@ export const EmojiSearch = () => {
 
   return (
     <Styled.All>
-      <SearchInput setFilter={setFilter} />
+      <SearchInput />
       <Styled.Column>
         {newEmojis.map(emoj => (
           <EmojiItem key={emoj.slug} emoj={emoj} />
