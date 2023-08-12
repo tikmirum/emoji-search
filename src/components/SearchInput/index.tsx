@@ -9,8 +9,6 @@ const { Search } = Input;
 export const SearchInput = () => {
   const { updateSearch, searchParams } = useSearchParams();
   const searchValue = useMemo(() => {
-    console.info('rerender');
-
     return searchParams.get('filter') || '';
   }, [searchParams]);
 
