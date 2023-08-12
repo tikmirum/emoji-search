@@ -1,17 +1,19 @@
-import React from 'react';
+import { forwardRef } from 'react';
+import { EmojiProps } from 'interfaces/emoji';
 
 import * as Styled from './styles';
-import { EmojiProps } from '../../interfaces/emoji';
 
 type EmojiItemProps = {
   emoj: EmojiProps;
 };
 
-export const EmojiItem = ({ emoj }: EmojiItemProps) => {
-  return (
-    <Styled.Emojis>
-      <Styled.EmojisImage>{emoj.character}</Styled.EmojisImage>
-      <Styled.EmojisName>{emoj.unicodeName}</Styled.EmojisName>
-    </Styled.Emojis>
-  );
-};
+export const EmojiItem = forwardRef<HTMLDivElement | null, EmojiItemProps>(
+  ({ emoj }: EmojiItemProps, ref) => {
+    return (
+      <Styled.Emojis ref={ref}>
+        <Styled.EmojisImage>{emoj.character}</Styled.EmojisImage>
+        <Styled.EmojisName>{emoj.unicodeName}</Styled.EmojisName>
+      </Styled.Emojis>
+    );
+  }
+);
